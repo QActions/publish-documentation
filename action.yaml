@@ -15,7 +15,7 @@ runs:
         then
           documentation_version=$PROJECT_VERSION
         else
-          documentation_version=$PROJECT_VERSION-dev
+          documentation_version="$PROJECT_VERSION-dev"
         fi
 
         documentation_path="services/$PROJECT_NAME/$documentation_version"
