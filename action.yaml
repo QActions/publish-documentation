@@ -13,21 +13,19 @@ runs:
       run: |
         if [ "${{inputs.ref}}" == "refs/heads/master" ]
         then
-          documentation_version=$PROJECT_VERSION
+          documentation_version=${PROJECT_VERSION}
         else
-          documentation_version="$PROJECT_VERSION-dev"
+          documentation_version="${PROJECT_VERSION}-dev"
         fi
 
-        documentation_path="services/$PROJECT_NAME/$documentation_version"
+        documentation_path="services/${PROJECT_NAME}/$documentation_version"
         echo "DOCUMENTATION_PATH=$documentation_path" >> $GITHUB_ENV
       shell: bash
 
     - name: Build the Documentation for repository
       run: |
-        export DOCS_BASE_URL="/$DOCUMENTATION_PATH/"
         swagger_viewer_url="https://developers.extrahorizon.io/swagger-ui/"
-        swagger_file_url="https://developers.extrahorizon.io/$DOCUMENTATION_PATH/openapi.yaml"
-        export DOCS_API_REFERENCE_URL="$swagger_viewer_url?url=$swagger_file_url"
+        swagger_file_url="https://developers.extrahorizon.io/${DOCUMENTATION_PATH}/openapi.yaml"
         echo '' > ./.npmrc
         npx vuepress build ./documentation/developers/
         cp ./documentation/developers/openapi.yaml ./documentation/developers/.vuepress/dist/openapi.yaml
@@ -35,6 +33,6 @@ runs:
 
     - name: Publish the Documentation to AWS
       run: |
-        aws s3 sync --acl public-read --delete ./documentation/developers/.vuepress/dist/ s3://developers.extrahorizon.io/$DOCUMENTATION_PATH
-        aws cloudfront create-invalidation --distribution-id EPT2WI4E0ECHN --paths /$DOCUMENTATION_PATH/*
+        aws s3 sync --acl public-read --delete ./documentation/developers/.vuepress/dist/ s3://developers.extrahorizon.io/${DOCUMENTATION_PATH}
+        aws cloudfront create-invalidation --distribution-id EPT2WI4E0ECHN --paths /${DOCUMENTATION_PATH}/*
       shell: bash
