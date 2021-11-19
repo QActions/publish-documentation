@@ -24,8 +24,10 @@ runs:
 
     - name: Build the Documentation for repository
       run: |
+        echo "DOCS_BASE_URL=/${DOCUMENTATION_PATH}/" >> $GITHUB_ENV
         swagger_viewer_url="https://developers.extrahorizon.io/swagger-ui/"
         swagger_file_url="https://developers.extrahorizon.io/${DOCUMENTATION_PATH}/openapi.yaml"
+        echo "DOCS_API_REFERENCE_URL=$swagger_viewer_url?url=$swagger_file_url" >> $GITHUB_ENV
         echo '' > ./.npmrc
         npx vuepress build ./documentation/developers/
         cp ./documentation/developers/openapi.yaml ./documentation/developers/.vuepress/dist/openapi.yaml
