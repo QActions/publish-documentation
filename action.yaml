@@ -24,11 +24,12 @@ runs:
 
     - name: Build the Documentation for repository
       run: |
-        export DOCS_BASE_URL="/${documentation_path}/"
+        export DOCS_BASE_URL="/${DOCUMENTATION_PATH}/"
+        
         swagger_viewer_url="https://developers.extrahorizon.io/swagger-ui/"
         swagger_file_url="https://developers.extrahorizon.io/${DOCUMENTATION_PATH}/openapi.yaml"
         export DOCS_API_REFERENCE_URL="$swagger_viewer_url?url=$swagger_file_url"
-        echo '' > ./.npmrc
+        
         npx vuepress build ./documentation/developers/
         cp ./documentation/developers/openapi.yaml ./documentation/developers/.vuepress/dist/openapi.yaml
       shell: bash
