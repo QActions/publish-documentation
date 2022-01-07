@@ -1,5 +1,5 @@
-name: "Publish Documentation"
-description: "Publishes the documentation to AWS"
+name: "Publish Service Documentation"
+description: "Publishes services documentation to developers.extrahorizon.io"
 inputs:
   ref:
     description: "Ref of repo"
