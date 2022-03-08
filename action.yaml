@@ -1,5 +1,5 @@
-name: "Publish Documentation"
-description: "Publishes the documentation to AWS"
+name: "Publish Service Documentation"
+description: "Publishes services documentation to swagger.extrahorizon.com"
 inputs:
   ref:
     description: "Ref of repo"
@@ -18,24 +18,12 @@ runs:
           documentation_version="${PROJECT_VERSION}-dev"
         fi
 
-        documentation_path="services/${PROJECT_NAME}/$documentation_version"
+        documentation_path="${PROJECT_NAME}/$documentation_version"
         echo "DOCUMENTATION_PATH=$documentation_path" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Build the Documentation for repository
-      run: |
-        export DOCS_BASE_URL="/${DOCUMENTATION_PATH}/"
-        
-        swagger_viewer_url="https://developers.extrahorizon.io/swagger-ui/"
-        swagger_file_url="https://developers.extrahorizon.io/${DOCUMENTATION_PATH}/openapi.yaml"
-        export DOCS_API_REFERENCE_URL="$swagger_viewer_url?url=$swagger_file_url"
-        
-        npx vuepress build ./documentation/developers/
-        cp ./documentation/developers/openapi.yaml ./documentation/developers/.vuepress/dist/openapi.yaml
       shell: bash
 
     - name: Publish the Documentation to AWS
       run: |
-        aws s3 sync --acl public-read --delete ./documentation/developers/.vuepress/dist/ s3://developers.extrahorizon.io/${DOCUMENTATION_PATH}
-        aws cloudfront create-invalidation --distribution-id EPT2WI4E0ECHN --paths /${DOCUMENTATION_PATH}/*
+        aws s3 sync --delete ./documentation/developers/ s3://swagger.extrahorizon.com/${DOCUMENTATION_PATH}
+        aws cloudfront create-invalidation --distribution-id E7MY46MSBV6S4 --paths /${DOCUMENTATION_PATH}/*
       shell: bash
