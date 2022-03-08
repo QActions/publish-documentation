@@ -24,6 +24,6 @@ runs:
 
     - name: Publish the Documentation to AWS
       run: |
-        aws s3 sync --acl public-read --delete ./documentation/developers/ s3://swagger.extrahorizon.com/${DOCUMENTATION_PATH}
+        aws s3 sync --delete ./documentation/developers/ s3://swagger.extrahorizon.com/${DOCUMENTATION_PATH}
         aws cloudfront create-invalidation --distribution-id E7MY46MSBV6S4 --paths /${DOCUMENTATION_PATH}/*
       shell: bash
