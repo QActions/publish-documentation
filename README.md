@@ -1,11 +1,13 @@
 # Publish service documentation
 
-Used to publish service documentation to developers.extrahorizon.io.
+Used to publish service documentation to swagger.extrahorizon.com.
 
-- Converts the markdown files in `./documentation/developers/` folder with vuepress to static html files
-- Moves the `openapi.yaml` in the result folder
-- Uploads the result folder to the developers.extrahorizon.io S3 bucket
-- Tells CloudFront to refresh its cache for developers.extrahorizon.io
+- Uploads the contents of the `./documentation/developers/` folder to the swagger.extrahorizon.com S3 bucket
+  - As a subfolder based on the project name and project version
+  - For example: `swagger.extrahorizon.com/users-service/1.0.8/`
+  - Adds a `-dev` suffix for all builds except for builds on the `master` branch
+  - For example: `swagger.extrahorizon.com/users-service/1.0.8-dev/`
+- Tells CloudFront to refresh its cache for swagger.extrahorizon.com
 
 Expected environment variables:
 ```sh
@@ -34,7 +36,7 @@ jobs:
         uses: QActions/expose-project-info@1.0.0
 
       - name: Build and publish the documentation
-        uses: QActions/publish-service-documentation@1.0.0
+        uses: QActions/publish-service-documentation@2.0.0
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
