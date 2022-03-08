@@ -18,7 +18,7 @@ runs:
           documentation_version="${PROJECT_VERSION}-dev"
         fi
 
-        documentation_path="services/${PROJECT_NAME}/$documentation_version"
+        documentation_path="${PROJECT_NAME}/$documentation_version"
         echo "DOCUMENTATION_PATH=$documentation_path" >> $GITHUB_ENV
       shell: bash
 
